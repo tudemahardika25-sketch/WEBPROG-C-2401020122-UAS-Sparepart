@@ -1,58 +1,54 @@
-@extends('layouts.layout')
-
-@section('title', 'Data Sparepart')
+@extends('layouts.app')
 
 @section('content')
-<div class="card shadow">
-    <div class="card-header bg-primary text-white d-flex justify-content-between">
-        <span>📦 Data Sparepart Motor</span>
-        <a href="{{ route('sparepart.create') }}" class="btn btn-light btn-sm">
-            + Tambah Sparepart
-        </a>
+
+<div class="card shadow-lg">
+    <div class="card-header text-danger fw-bold">
+        DAFTAR SPAREPART
     </div>
 
     <div class="card-body">
-        @if(count($sparepart) == 0)
-            <div class="alert alert-warning text-center">
-                Data sparepart masih kosong
-            </div>
-        @else
-        <table class="table table-bordered table-hover text-center align-middle">
-            <thead class="table-dark">
+
+        <a href="{{ route('sparepart.create') }}" class="btn btn-success mb-3">
+            + TAMBAH SPAREPART
+        </a>
+
+        <table class="table table-bordered text-center">
+            <thead>
                 <tr>
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Merk</th>
-                    <th>Harga</th>
-                    <th>Stok</th>
-                    <th>Aksi</th>
+                    <th>NO</th>
+                    <th>NAMA</th>
+                    <th>HARGA</th>
+                    <th>STOK</th>
+                    <th>AKSI</th>
                 </tr>
             </thead>
+
             <tbody>
-                @foreach($sparepart as $i => $s)
+                @foreach($spareparts as $sp)
                 <tr>
-                    <td>{{ $i+1 }}</td>
-                    <td>{{ $s['nama'] }}</td>
-                    <td>{{ $s['merk'] }}</td>
-                    <td>Rp {{ number_format($s['harga'],0,',','.') }}</td>
-                    <td>{{ $s['stok'] }}</td>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ strtoupper($sp->nama_sparepart) }}</td>
+                    <td>Rp {{ number_format($sp->harga) }}</td>
+                    <td>{{ $sp->stok }}</td>
                     <td>
-                        <a href="{{ route('sparepart.edit',$s['id']) }}" class="btn btn-warning btn-sm">
-                            Edit
-                        </a>
-                        <form action="{{ route('sparepart.destroy',$s['id']) }}" method="POST" class="d-inline">
+                        <a href="{{ route('sparepart.edit', $sp->id) }}" class="btn btn-warning btn-sm">EDIT</a>
+
+                        <form action="{{ route('sparepart.destroy', $sp->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button onclick="return confirm('Hapus data?')" class="btn btn-danger btn-sm">
-                                Hapus
+                            <button class="btn btn-danger btn-sm"
+                                onclick="return confirm('HAPUS DATA INI?')">
+                                HAPUS
                             </button>
                         </form>
                     </td>
                 </tr>
                 @endforeach
             </tbody>
+
         </table>
-        @endif
     </div>
 </div>
+
 @endsection
